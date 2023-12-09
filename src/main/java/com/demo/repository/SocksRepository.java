@@ -2,6 +2,7 @@ package com.demo.repository;
 
 import com.demo.dto.SocksDto;
 import com.demo.entity.Socks;
+import com.demo.service.Operation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +17,24 @@ import java.util.Optional;
 public interface SocksRepository extends JpaRepository<Socks, Integer> {
     @Query(value = "SELECT id, color, cotton_part, quantity FROM Socks WHERE color =:color AND cotton_part =:cottonPart LIMIT 1", nativeQuery = true)
     Optional<Socks> findByColorAndCotton(@Param("color") String color,
-                                            @Param("cottonPart") int cottonPart);
+                                         @Param("cottonPart") int cottonPart);
+
+    @Query(value = "SELECT id, color, cotton_part, quantity FROM Socks WHERE color =:color AND cotton_part =:cottonPart LIMIT 1", nativeQuery = true)
+    Optional<Socks> findByEquals(@Param("color") String color,
+                                 @Param("cottonPart") int cottonPart);
+
+    @Query(value = "SELECT id, color, cotton_part, quantity FROM Socks WHERE color =:color AND cotton_part >:cottonPart LIMIT 1", nativeQuery = true)
+    Optional<Socks> findByMoreThen(@Param("color") String color,
+                                   @Param("cottonPart") int cottonPart);
+
+    @Query(value = "SELECT id, color, cotton_part, quantity FROM Socks WHERE color =:color AND cotton_part <:cottonPart LIMIT 1", nativeQuery = true)
+    Optional<Socks> findByLessThen(@Param("color") String color,
+                                   @Param("cottonPart") int cottonPart);
+
+
+//    @Query(value = "SELECT id, color, cotton_part, quantity FROM Socks WHERE color =:color AND cotton_part :operation :cottonPart LIMIT 1", nativeQuery = true)
+//    Optional<Socks> findByOperation(@Param("color") String color,
+//                                    @Param("operation") String operation,
+//                                    @Param("cottonPart") int cottonPart);
+
 }

@@ -1,6 +1,6 @@
 package com.demo.service;
 
-import com.demo.dto.InComeSocksDto;
+import com.demo.dto.ComeSocksDto;
 import com.demo.dto.SocksDto;
 import com.demo.entity.Socks;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class SocksMapper {
         socks.setQuantity(socksDto.getQuantity());
         return socks;
     }
-    public Socks mapInComeDtoToEntity(InComeSocksDto socksDto){
+    public Socks mapInComeDtoToEntity(ComeSocksDto socksDto){
         Socks socks = new Socks();
         socks.setColor(socksDto.getColor());
         socks.setCottonPart(socksDto.getCottonPart());
@@ -33,12 +33,12 @@ public class SocksMapper {
         return socksDto;
     }
 
-    public InComeSocksDto mapSocksToInComeDto(Socks socks){
-        InComeSocksDto inComeSocksDto = new InComeSocksDto();
-        inComeSocksDto.setColor(socks.getColor());
-        inComeSocksDto.setQuantity(socks.getQuantity());
-        inComeSocksDto.setCottonPart(socks.getCottonPart());
-        return inComeSocksDto;
+    public ComeSocksDto mapSocksToInComeDto(Socks socks){
+        ComeSocksDto comeSocksDto = new ComeSocksDto();
+        comeSocksDto.setColor(socks.getColor());
+        comeSocksDto.setQuantity(socks.getQuantity());
+        comeSocksDto.setCottonPart(socks.getCottonPart());
+        return comeSocksDto;
     }
 
 }
