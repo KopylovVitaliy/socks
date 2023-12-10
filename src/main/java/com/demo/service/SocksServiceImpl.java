@@ -52,15 +52,19 @@ public class SocksServiceImpl implements SocksService {
         if(socksRepository.findByColor(color).isEmpty()){
             throw new NotFoundSocks(color);
         }
-        if (operation.getOperationType().equals("=")) {
-            Socks socks = socksRepository.findByEquals(color, cottonPart).orElseThrow(NotCottonPart::new);
-            return socksMapper.mapSocksToDto(socks);
-        } else if (operation.getOperationType().equals(">")) {
-            Socks socks = socksRepository.findByMoreThen(color, cottonPart).orElseThrow(NotCottonPart::new);
-            return socksMapper.mapSocksToDto(socks);
-        } else if (operation.getOperationType().equals("<")) {
-            Socks socks = socksRepository.findByLessThen(color, cottonPart).orElseThrow(NotCottonPart::new);
-            return socksMapper.mapSocksToDto(socks);
+        switch (operation.getOperationType()) {
+            case "=" -> {
+                Socks socks = socksRepository.findByEquals(color, cottonPart).orElseThrow(NotCottonPart::new);
+                return socksMapper.mapSocksToDto(socks);
+            }
+            case ">" -> {
+                Socks socks = socksRepository.findByMoreThen(color, cottonPart).orElseThrow(NotCottonPart::new);
+                return socksMapper.mapSocksToDto(socks);
+            }
+            case "<" -> {
+                Socks socks = socksRepository.findByLessThen(color, cottonPart).orElseThrow(NotCottonPart::new);
+                return socksMapper.mapSocksToDto(socks);
+            }
         }
         throw new NotFoundSocks(color);
     }
