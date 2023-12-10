@@ -3,6 +3,7 @@ package com.demo.service;
 import com.demo.dto.ComeSocksDto;
 import com.demo.dto.SocksDto;
 import com.demo.entity.Socks;
+import com.demo.exceptions.NotCottonPart;
 import com.demo.exceptions.NotFoundSocks;
 import com.demo.exceptions.NotQuantityException;
 import com.demo.repository.SocksRepository;
@@ -52,13 +53,13 @@ public class SocksServiceImpl implements SocksService {
             throw new NotFoundSocks(color);
         }
         if (operation.getOperationType().equals("=")) {
-            Socks socks = socksRepository.findByEquals(color, cottonPart).get();
+            Socks socks = socksRepository.findByEquals(color, cottonPart).orElseThrow(NotCottonPart::new);
             return socksMapper.mapSocksToDto(socks);
         } else if (operation.getOperationType().equals(">")) {
-            Socks socks = socksRepository.findByMoreThen(color, cottonPart).get();
+            Socks socks = socksRepository.findByMoreThen(color, cottonPart).orElseThrow(NotCottonPart::new);
             return socksMapper.mapSocksToDto(socks);
         } else if (operation.getOperationType().equals("<")) {
-            Socks socks = socksRepository.findByLessThen(color, cottonPart).get();
+            Socks socks = socksRepository.findByLessThen(color, cottonPart).orElseThrow(NotCottonPart::new);
             return socksMapper.mapSocksToDto(socks);
         }
         throw new NotFoundSocks(color);
