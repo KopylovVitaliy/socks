@@ -3,6 +3,8 @@ package com.demo.service;
 import com.demo.dto.ComeSocksDto;
 import com.demo.dto.SocksDto;
 import com.demo.entity.Socks;
+import com.demo.exceptions.NotFoundSocks;
+import com.demo.exceptions.NotQuantityException;
 import com.demo.repository.SocksRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,11 +34,11 @@ public class SocksServiceImpl implements SocksService {
     @Override
     public SocksDto outComeSocks(ComeSocksDto comeSocksDto) {
         if (socksRepository.findByColorAndCotton(comeSocksDto.getColor().toLowerCase(), comeSocksDto.getCottonPart()).isEmpty()) {
-            throw new RuntimeException();
+            throw new NotFoundSocks(comeSocksDto.getColor());
         }
         Socks socks = socksRepository.findByColorAndCotton(comeSocksDto.getColor().toLowerCase(), comeSocksDto.getCottonPart()).get();
         if (socks.getQuantity() - comeSocksDto.getQuantity() < 0) {
-            throw new RuntimeException();
+            throw new NotQuantityException(socks.getQuantity());
         }
         socks.setQuantity(socks.getQuantity() - comeSocksDto.getQuantity());
         socksRepository.save(socks);
@@ -46,6 +48,9 @@ public class SocksServiceImpl implements SocksService {
 
     @Override
     public SocksDto getSocks(String color, Operation operation, int cottonPart) {
+        if(socksRepository.findByColor(color).isEmpty()){
+            throw new NotFoundSocks(color);
+        }
         if (operation.getOperationType().equals("=")) {
             Socks socks = socksRepository.findByEquals(color, cottonPart).get();
             return socksMapper.mapSocksToDto(socks);
@@ -56,6 +61,6 @@ public class SocksServiceImpl implements SocksService {
             Socks socks = socksRepository.findByLessThen(color, cottonPart).get();
             return socksMapper.mapSocksToDto(socks);
         }
-        throw new RuntimeException();
+        throw new NotFoundSocks(color);
     }
 }

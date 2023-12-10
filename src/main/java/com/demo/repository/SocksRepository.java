@@ -32,9 +32,6 @@ public interface SocksRepository extends JpaRepository<Socks, Integer> {
                                    @Param("cottonPart") int cottonPart);
 
 
-//    @Query(value = "SELECT id, color, cotton_part, quantity FROM Socks WHERE color =:color AND cotton_part :operation :cottonPart LIMIT 1", nativeQuery = true)
-//    Optional<Socks> findByOperation(@Param("color") String color,
-//                                    @Param("operation") String operation,
-//                                    @Param("cottonPart") int cottonPart);
-
+    @Query(value = "SELECT id, color, cotton_part, quantity FROM Socks WHERE color =:color LIMIT 1", nativeQuery = true)
+    Optional<Socks> findByColor(@Param("color") String color);
 }
